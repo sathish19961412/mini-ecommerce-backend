@@ -1,13 +1,29 @@
-exports.getProducts=(req,res,next)=>{
+const ProductModels=require('../models/productModels');
+
+//Get Products API - /api/v1/products
+exports.getProducts=async (req,res,next)=>{
+
+      const products = await ProductModels.find({});
+
       res.json({
          success:true,
-         message:'Get Products To Working!'
+         products
       })
 }
 
-exports.getSingleProducts=(req,res,next)=>{
-    res.json({
-       success:true,
-       message:'Get Single Products To Working!'
-    })
+//Get Single Product API - /api/v1/product/:id 
+exports.getSingleProducts= async (req,res,next)=>{
+   try{
+      const product = await ProductModels.findById(req.params.id);
+      res.json({
+         success:true,
+         product
+      })
+   }catch(error){
+       res.status(404).json({
+         success:false,
+         message:'Unable to get Products that ID'
+       })
+   }
+    
 }
