@@ -2,9 +2,11 @@ const ProductModels=require('../models/productModels');
 
 //Get Products API - /api/v1/products
 exports.getProducts=async (req,res,next)=>{
-
-      const products = await ProductModels.find({});
-
+      const query=req.query.keyword?{name:{
+         $regex:req.query.keyword,
+         $options:'i'
+      }}:{}
+      const products = await ProductModels.find(query);
       res.json({
          success:true,
          products
